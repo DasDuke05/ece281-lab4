@@ -29,10 +29,10 @@ architecture top_basys3_arch of top_basys3 is
     signal w_clk2 : std_logic; -- TDM Clock
     signal w_floor1 : std_logic_vector(3 downto 0);
     signal w_floor2 : std_logic_vector(3 downto 0);
-    signal w_Tdata1 : std_logic_vector(6 downto 0);
+    signal w_Tdata1 : std_logic_vector(6 downto 0) := "0001110";
     signal w_Tdata2 : std_logic_vector(6 downto 0);
-    signal w_Tdata3 : std_logic_vector(6 downto 0) := "1111111"; -- initialize to 0, no data ever going on these, display nothing
-    signal w_Tdata4 : std_logic_vector(6 downto 0) := "1111111";
+    signal w_Tdata3 : std_logic_vector(6 downto 0) := "0001110"; -- initialize to 0, no data ever going on these, display nothing
+    signal w_Tdata4 : std_logic_vector(6 downto 0);
     
     signal w_RFSM : std_logic;
     signal w_RClk : std_logic;
@@ -99,8 +99,8 @@ begin
 		Port map(
             i_clk => w_clk,
             i_reset => w_RFSM,
-            is_stopped => sw(2),
-            go_up_down => sw(3),
+            is_stopped => sw(14),
+            go_up_down => sw(15),
             o_floor => w_floor1
 		 );
 	 EC2 : elevator_controller_fsm
@@ -114,11 +114,11 @@ begin
 	
 	 sevenseg_decoder_inst1 : sevenseg_decoder
      port map ( i_Hex => w_floor1,
-               o_seg_n => w_Tdata1
+               o_seg_n => w_Tdata2
                );
      sevenseg_decoder_inst2 : sevenseg_decoder
      port map ( i_Hex => w_floor2,
-               o_seg_n => w_Tdata2
+               o_seg_n => w_Tdata4
                );
      
      TDM4_inst : TDM4 
